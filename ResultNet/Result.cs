@@ -4,6 +4,12 @@ namespace ResultNet
 {
     public abstract class Result<T, E>
     {
+        // Internal constructor to prevent users from deriving from this type
+        internal Result()
+        {
+
+        }
+
         public static Ok<T, E> Ok(T value)
         {
             return new Ok<T, E>(value);
