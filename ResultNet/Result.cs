@@ -35,6 +35,15 @@ namespace ResultNet
                 _ => throw new InvalidOperationException("Unknown Result type"),
             };
         }
+        public Result<U, E> MapOr<U>(U @default, Func<T, U> func)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => Result<U, E>.Ok(func(ok)),
+                Error<T, E> error => Result<U, E>.Ok(@default),
+                _ => throw new InvalidOperationException("Unknown Result type"),
+            };
+        }
     }
 
     public sealed class Ok<T, E> : Result<T, E>
