@@ -35,12 +35,21 @@ namespace ResultNet
                 _ => throw new InvalidOperationException("Unknown Result type"),
             };
         }
-        public Result<U, E> MapOr<U>(U @default, Func<T, U> func)
+        public U MapOr<U>(U @default, Func<T, U> func)
         {
             return this switch
             {
-                Ok<T, E> ok => Result<U, E>.Ok(func(ok)),
-                Error<T, E> error => Result<U, E>.Ok(@default),
+                Ok<T, E> ok => func(ok),
+                Error<T, E> error => @default,
+                _ => throw new InvalidOperationException("Unknown Result type"),
+            };
+        }
+        public U MapOrElse<U>(Func<E, U> @default, Func<T, U> func)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => func(ok),
+                Error<T, E> error => @default(error),
                 _ => throw new InvalidOperationException("Unknown Result type"),
             };
         }
