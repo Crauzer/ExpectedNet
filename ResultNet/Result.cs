@@ -1,5 +1,8 @@
 ﻿using System;
 
+// Disable error because we do not allow users to derive from Result
+#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+
 namespace ResultNet
 {
     public abstract class Result<T, E>
@@ -37,8 +40,7 @@ namespace ResultNet
             return this switch
             {
                 Ok<T, E> ok => Result<U, E>.Ok(func(ok)),
-                Error<T, E> error => Result<U, E>.Error(error),
-                _ => throw new InvalidOperationException("Unknown Result type"),
+                Error<T, E> error => Result<U, E>.Error(error)
             };
         }
         public U MapOr<U>(U @default, Func<T, U> func)
@@ -46,8 +48,7 @@ namespace ResultNet
             return this switch
             {
                 Ok<T, E> ok => func(ok),
-                Error<T, E> error => @default,
-                _ => throw new InvalidOperationException("Unknown Result type"),
+                Error<T, E> _ => @default
             };
         }
         public U MapOrElse<U>(Func<E, U> @default, Func<T, U> func)
@@ -55,8 +56,7 @@ namespace ResultNet
             return this switch
             {
                 Ok<T, E> ok => func(ok),
-                Error<T, E> error => @default(error),
-                _ => throw new InvalidOperationException("Unknown Result type"),
+                Error<T, E> error => @default(error)
             };
         }
         public Result<T, F> MapError<F>(Func<E, F> func)
@@ -64,11 +64,27 @@ namespace ResultNet
             return this switch
             {
                 Ok<T, E> ok => Result<T, F>.Ok(ok),
-                Error<T, E> error => Result<T, F>.Error(func(error)),
-                _ => throw new InvalidOperationException("Unknown Result type")
+                Error<T, E> error => Result<T, F>.Error(func(error))
             };
         }
     
+        public Result<U, E> And<U>(Result<U, E> result)
+        {
+            return this switch
+            {
+                Ok<T, E> _ => result,
+                Error<T, E> error => Result<U, E>.Error(error)
+            };
+        }
+        public Result<U, E> AndThen<U>(Func<T, Result<U, E>> func)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => func(ok),
+                Error<T, E> error => Result<U, E>.Error(error)
+            };
+        }
+        
 
     }
 
@@ -80,6 +96,8 @@ namespace ResultNet
         {
             this._value = value;
         }
+
+        public T Get() => this._value;
 
         public static implicit operator T(Ok<T, E> result)
         {
@@ -95,6 +113,8 @@ namespace ResultNet
         {
             this._error = error;
         }
+
+        public E Get() => this._error;
 
         public static implicit operator E(Error<T, E> result)
         {
