@@ -84,5 +84,45 @@ namespace ResultNet.Tests
             Assert.AreEqual(1, resultOk.Map((int x) => { return x + 1; }).Unwrap());
             Assert.IsTrue(resultError.Map((int x) => { return x + 1; }).IsError());
         }
+        [Test] public void TestMapOr()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(5, resultOk.MapOr(20, (int x) => { return x + 5; }));
+            Assert.AreEqual(20, resultError.MapOr(20, (int x) => { return x + 5; }));
+        }
+        [Test] public void TestMapOrElse()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(2, resultOk.MapOrElse((string error) => { return 1; }, (int x) => { return 2; }));
+            Assert.AreEqual(1, resultError.MapOrElse((string error) => { return 1; }, (int x) => { return 2; }));
+        }
+
+        [Test] public void TestAnd()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(5, resultOk.And(Result<int, string>.Ok(5)).Unwrap());
+            Assert.IsTrue(resultError.And(Result<int, string>.Ok(5)).IsError());
+        }
+        [Test] public void TestAndThen()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(6, resultOk.AndThen((int x) =>
+            {
+                return Result<int, string>.Ok(x + 6);
+            }).Unwrap());
+
+            Assert.IsTrue(resultError.AndThen((int x) =>
+            {
+                return Result<int, string>.Ok(x + 6);
+            }).IsError());
+        }
     }
 }
