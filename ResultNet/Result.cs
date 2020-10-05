@@ -85,6 +85,14 @@ namespace ResultNet
             };
         }
         
+        public Result<T, F> Or<F>(Result<T, F> result)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => Result<T, F>.Ok(ok),
+                Error<T, E> _ => result
+            };
+        }
 
     }
 
