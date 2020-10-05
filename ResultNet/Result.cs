@@ -1,6 +1,6 @@
 ﻿using System;
 
-// Disable error because we do not allow users to derive from Result
+// Disable warning because we do not allow users to derive from Result
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
 
 namespace ResultNet
