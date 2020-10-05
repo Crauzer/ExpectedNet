@@ -100,7 +100,7 @@ namespace ResultNet
                 Error<T, E> error => Result<T, F>.Error(func(error))
             };
         }
-    
+
         public Result<U, E> And<U>(Result<U, E> result)
         {
             return this switch
@@ -117,7 +117,7 @@ namespace ResultNet
                 Error<T, E> error => Result<U, E>.Error(error)
             };
         }
-        
+
         public Result<T, F> Or<F>(Result<T, F> result)
         {
             return this switch
