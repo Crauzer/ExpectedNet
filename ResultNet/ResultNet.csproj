@@ -3,6 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
+    <Version>0.1</Version>
+    <Authors>Crauzer</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <Copyright></Copyright>
+    <RepositoryUrl>https://github.com/Crauzer/ResultNet</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Crauzer/ResultNet</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Optional" Version="4.0.0" />
+  </ItemGroup>
 
 </Project>
