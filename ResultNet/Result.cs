@@ -30,8 +30,23 @@ namespace ResultNet
             return this switch
             {
                 Ok<T, E> ok => ok,
-                Error<T, E> _ => throw new InvalidOperationException("Cannot unwrap an Error Result"),
-                _ => throw new InvalidOperationException("Unknown Result type"),
+                Error<T, E> _ => throw new InvalidOperationException("Cannot unwrap an Error Result")
+            };
+        }
+        public T UnwrapOr(T @default)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => ok,
+                Error<T, E> _ => @default
+            };
+        }
+        public T UnwrapOrElse(Func<E, T> func)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => ok,
+                Error<T, E> error => func(error)
             };
         }
 
