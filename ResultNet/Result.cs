@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Optional;
+using System;
 
 // Disable warning because we do not allow users to derive from Result
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
@@ -24,6 +25,23 @@ namespace ResultNet
 
         public bool IsOk() => this is Ok<T, E>;
         public bool IsError() => this is Error<T, E>;
+
+        public Option<T> GetOk()
+        {
+            return this switch
+            {
+                Ok<T, E> ok => Option.Some<T>(ok),
+                Error<T, E> _ => Option.None<T>()
+            };
+        }
+        public Option<E> GetError()
+        {
+            return this switch
+            {
+                Ok<T, E> _ => Option.None<E>(),
+                Error<T, E> error => Option.Some<E>(error)
+            };
+        }
 
         public T Unwrap()
         {
