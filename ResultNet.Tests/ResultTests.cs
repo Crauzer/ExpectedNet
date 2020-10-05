@@ -124,5 +124,28 @@ namespace ResultNet.Tests
                 return Result<int, string>.Ok(x + 6);
             }).IsError());
         }
+
+        [Test] public void TestOr()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(0, resultOk.Or(Result<int, string>.Ok(5)).Unwrap());
+            Assert.AreEqual(5, resultError.Or(Result<int, string>.Ok(5)).Unwrap());
+        }
+        [Test] public void TestOrElse()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(0, resultOk.OrElse((string error) =>
+            {
+                return Result<int, string>.Ok(10);
+            }).Unwrap());
+            Assert.AreEqual(10, resultError.OrElse((string error) =>
+            {
+                return Result<int, string>.Ok(10);
+            }).Unwrap());
+        }
     }
 }
