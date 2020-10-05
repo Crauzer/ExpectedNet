@@ -20,7 +20,7 @@ namespace ResultNet
         }
 
         public bool IsOk() => this is Ok<T, E>;
-        public bool IsError() => this is Error<E, T>;
+        public bool IsError() => this is Error<T, E>;
 
         public T Unwrap()
         {
