@@ -75,5 +75,14 @@ namespace ResultNet.Tests
                 return 56;
             }));
         }
+
+        [Test] public void TestMap()
+        {
+            var resultOk = Result<int, string>.Ok(0);
+            var resultError = Result<int, string>.Error("kek");
+
+            Assert.AreEqual(1, resultOk.Map((int x) => { return x + 1; }).Unwrap());
+            Assert.IsTrue(resultError.Map((int x) => { return x + 1; }).IsError());
+        }
     }
 }
