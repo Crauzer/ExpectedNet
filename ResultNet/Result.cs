@@ -93,7 +93,14 @@ namespace ResultNet
                 Error<T, E> _ => result
             };
         }
-
+        public Result<T, F> OrElse<F>(Func<E, Result<T, F>> func)
+        {
+            return this switch
+            {
+                Ok<T, E> ok => Result<T, F>.Ok(ok),
+                Error<T, E> error => func(error)
+            };
+        }
     }
 
     public sealed class Ok<T, E> : Result<T, E>
