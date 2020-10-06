@@ -8,10 +8,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <Copyright></Copyright>
-    <RepositoryUrl>https://github.com/Crauzer/ResultNet</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Crauzer/ResultNet</PackageProjectUrl>
-    <PackageTags>result safety rust</PackageTags>
+    <RepositoryUrl>https://github.com/Crauzer/ExpectedNet</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Crauzer/ExpectedNet</PackageProjectUrl>
+    <PackageTags>result safety rust expected</PackageTags>
     <Description>Provides a Rust-like Result type in .NET</Description>
+    <PackageId>ExpectedNet</PackageId>
+    <Product>ExpectedNet</Product>
   </PropertyGroup>
 
   <ItemGroup>
