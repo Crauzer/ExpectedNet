@@ -150,14 +150,12 @@ namespace ResultNet
 
     public sealed class Ok<T, E> : Result<T, E>
     {
-        private T _value;
+        public T Value { get; private set; }
 
         public Ok(T value)
         {
             this._value = value;
         }
-
-        public T Get() => this._value;
 
         public static implicit operator T(Ok<T, E> result)
         {
@@ -167,14 +165,12 @@ namespace ResultNet
 
     public sealed class Error<T, E> : Result<T, E>
     {
-        private E _error;
+        public E Value { get; private set; }
 
         public Error(E error)
         {
             this._error = error;
         }
-
-        public E Get() => this._error;
 
         public static implicit operator E(Error<T, E> result)
         {
