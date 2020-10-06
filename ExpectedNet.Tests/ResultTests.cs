@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System;
 
-namespace ResultNet.Tests
+namespace ExpectedNet.Tests
 {
     [TestFixture(Author = "Crauzer")]
     public class ResultTests

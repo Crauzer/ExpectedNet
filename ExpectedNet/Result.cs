@@ -4,7 +4,7 @@ using System;
 // Disable warning because we do not allow users to derive from Result
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
 
-namespace ResultNet
+namespace ExpectedNet
 {
     public abstract class Result<T, E>
     {
@@ -154,12 +154,12 @@ namespace ResultNet
 
         public Ok(T value)
         {
-            this._value = value;
+            this.Value = value;
         }
 
         public static implicit operator T(Ok<T, E> result)
         {
-            return result._value;
+            return result.Value;
         }
     }
 
@@ -169,12 +169,12 @@ namespace ResultNet
 
         public Error(E error)
         {
-            this._error = error;
+            this.Value = error;
         }
 
         public static implicit operator E(Error<T, E> result)
         {
-            return result._error;
+            return result.Value;
         }
     }
 }
