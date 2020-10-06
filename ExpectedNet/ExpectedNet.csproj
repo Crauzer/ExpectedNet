@@ -14,6 +14,11 @@
     <Description>Provides a Rust-like Result type in .NET</Description>
     <PackageId>ExpectedNet</PackageId>
     <Product>ExpectedNet</Product>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\dev\ExpectedNet\ExpectedNet\ExpectedNet.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
