@@ -134,6 +134,18 @@ namespace ResultNet
                 Error<T, E> error => func(error)
             };
         }
+
+        public static Result<TResult, Exception> Catch<TResult>(Func<TResult> func)
+        {
+            try
+            {
+                return Result<TResult, Exception>.Ok(func());
+            }
+            catch(Exception exception)
+            {
+                return Result<TResult, Exception>.Error(exception);
+            }
+        }
     }
 
     public sealed class Ok<T, E> : Result<T, E>

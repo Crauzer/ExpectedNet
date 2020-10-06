@@ -161,5 +161,25 @@ namespace ResultNet.Tests
                 return Result<int, string>.Ok(10);
             }).Unwrap());
         }
+    
+        [Test]
+        public void TestCatch()
+        {
+            var resultOk = Result<int, Exception>.Catch(() => 
+            {
+                return 5;
+            });
+
+            var resultError = Result<int, Exception>.Catch(() =>
+            {
+                throw new InvalidOperationException("error");
+                return 10; // for type inferring
+            });
+
+            Assert.IsTrue(resultOk.IsOk());
+            Assert.AreEqual(5, resultOk.Unwrap());
+
+            Assert.IsTrue(resultError.IsError());
+        }
     }
 }
