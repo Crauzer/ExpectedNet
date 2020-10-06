@@ -1,2 +1,2 @@
-# ResultNet
+# ExpectedNet
 Result type for .NET
