@@ -22,7 +22,7 @@ namespace ExpectedNet
         /// <summary>
         /// Creates a new <see cref="Ok{T, E}"/> result containing <paramref name="value"/>
         /// </summary>
-        public static Ok<T, E> Ok(T value)
+        internal static Ok<T, E> Ok(T value)
         {
             return new Ok<T, E>(value);
         }
@@ -30,7 +30,7 @@ namespace ExpectedNet
         /// <summary>
         /// Creates a new <see cref="Error{T, E}"/> result containing <paramref name="value"/>
         /// </summary>
-        public static Error<T, E> Error(E value)
+        internal static Error<T, E> Error(E value)
         {
             return new Error<T, E>(value);
         }
@@ -143,7 +143,7 @@ namespace ExpectedNet
                 Error<T, E> error => @default(error)
             };
         }
-        
+
         /// <summary>
         /// Applies the function <paramref name="func"/> to the contained <see cref="Error{T, E}"/> value, ignoring an <see cref="Ok{T, E}"/> result
         /// </summary>
@@ -210,7 +210,7 @@ namespace ExpectedNet
             {
                 return Result<TResult, Exception>.Ok(func());
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return Result<TResult, Exception>.Error(exception);
             }
@@ -230,7 +230,7 @@ namespace ExpectedNet
         /// <summary>
         /// Creates a new <see cref="Ok{T, E}"/> result containing <paramref name="value"/>
         /// </summary>
-        public Ok(T value)
+        internal Ok(T value)
         {
             this.Value = value;
         }
@@ -257,7 +257,7 @@ namespace ExpectedNet
         /// <summary>
         /// Creates a new <see cref="Error{T, E}"/> result containing <paramref name="value"/>
         /// </summary>
-        public Error(E value)
+        internal Error(E value)
         {
             this.Value = value;
         }
@@ -276,6 +276,6 @@ namespace ExpectedNet
     /// </summary>
     public struct Unit
     {
-        
+
     }
 }

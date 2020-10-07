@@ -1,5 +1,8 @@
+using ExpectedNet.Extensions.Result;
 using NUnit.Framework;
 using System;
+
+using static ExpectedNet.Extensions.Result.ResultExtensions;
 
 namespace ExpectedNet.Tests
 {
@@ -9,14 +12,14 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestIsOk()
         {
-            var result = Result<int, string>.Ok(0);
+            var result = Expect(0, "error");
 
             Assert.IsTrue(result.IsOk());
         }
         [Test]
         public void TestIsError()
         {
-            var result = Result<int, string>.Error("cats > dogs");
+            var result = Expect<string, string>(null, "cats > dogs");
 
             Assert.IsTrue(result.IsError());
         }
@@ -24,7 +27,7 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestGetOk()
         {
-            var result = Result<int, string>.Ok(0);
+            var result = Expect(0, "error");
             var ok = result.GetOk();
 
             Assert.IsTrue(ok.HasValue);
@@ -33,7 +36,7 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestGetError()
         {
-            var result = Result<int, string>.Error("420");
+            var result = Expect<string, string>(null, "420");
             var error = result.GetError();
 
             Assert.IsTrue(error.HasValue);
@@ -42,8 +45,8 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestUnwrap()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<string, string>(null, "error");
 
             Assert.DoesNotThrow(() =>
             {
@@ -60,8 +63,8 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestUnwrapOr()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(0, resultOk.UnwrapOr(5));
             Assert.AreEqual(5, resultError.UnwrapOr(5));
@@ -69,8 +72,8 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestUnwrapOrElse()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(0, resultOk.UnwrapOrElse((string error) =>
             {
@@ -86,79 +89,92 @@ namespace ExpectedNet.Tests
         [Test]
         public void TestMap()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(1, resultOk.Map((int x) => { return x + 1; }).Unwrap());
-            Assert.IsTrue(resultError.Map((int x) => { return x + 1; }).IsError());
+            Assert.IsTrue(resultError.Map((int? x) => { return x + 1; }).IsError());
         }
         [Test]
         public void TestMapOr()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(5, resultOk.MapOr(20, (int x) => { return x + 5; }));
-            Assert.AreEqual(20, resultError.MapOr(20, (int x) => { return x + 5; }));
+            Assert.AreEqual(20, resultError.MapOr(20, (int? x) => { return x + 5; }));
         }
         [Test]
         public void TestMapOrElse()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(2, resultOk.MapOrElse((string error) => { return 1; }, (int x) => { return 2; }));
-            Assert.AreEqual(1, resultError.MapOrElse((string error) => { return 1; }, (int x) => { return 2; }));
+            Assert.AreEqual(1, resultError.MapOrElse((string error) => { return 1; }, (int? x) => { return 2; }));
         }
 
         [Test]
         public void TestAnd()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
-            Assert.AreEqual(5, resultOk.And(Result<int, string>.Ok(5)).Unwrap());
-            Assert.IsTrue(resultError.And(Result<int, string>.Ok(5)).IsError());
+            Assert.AreEqual(
+                5,
+                resultOk
+                .And(Expect(5, "error"))
+                .Unwrap());
+            Assert.IsTrue(
+                resultError
+                .And(Expect<int?, string>(null, "error"))
+                .IsError());
         }
         [Test]
         public void TestAndThen()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(6, resultOk.AndThen((int x) =>
             {
-                return Result<int, string>.Ok(x + 6);
+                return Expect(x + 6, "error");
             }).Unwrap());
 
-            Assert.IsTrue(resultError.AndThen((int x) =>
+            Assert.IsTrue(resultError.AndThen((int? x) =>
             {
-                return Result<int, string>.Ok(x + 6);
+                return Expect(x + 6, "error");
             }).IsError());
         }
 
         [Test]
         public void TestOr()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
-            Assert.AreEqual(0, resultOk.Or(Result<int, string>.Ok(5)).Unwrap());
-            Assert.AreEqual(5, resultError.Or(Result<int, string>.Ok(5)).Unwrap());
+            Assert.AreEqual(
+                0,
+                resultOk.Or(Expect(5, "error"))
+                .Unwrap());
+            Assert.AreEqual(5,
+                resultError
+                .Or(Expect((int?)5, "error"))
+                .Unwrap());
         }
         [Test]
         public void TestOrElse()
         {
-            var resultOk = Result<int, string>.Ok(0);
-            var resultError = Result<int, string>.Error("kek");
+            var resultOk = Expect(0, "error");
+            var resultError = Expect<int?, string>(null, "error");
 
             Assert.AreEqual(0, resultOk.OrElse((string error) =>
             {
-                return Result<int, string>.Ok(10);
+                return Expect(10, "error");
             }).Unwrap());
             Assert.AreEqual(10, resultError.OrElse((string error) =>
             {
-                return Result<int, string>.Ok(10);
+                return Expect((int?)10, "error");
             }).Unwrap());
         }
     
