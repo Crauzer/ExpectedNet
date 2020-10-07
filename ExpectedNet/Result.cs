@@ -270,4 +270,12 @@ namespace ExpectedNet
             return result.Value;
         }
     }
+
+    /// <summary>
+    /// Represents an empty type
+    /// </summary>
+    public struct Void
+    {
+        
+    }
 }
