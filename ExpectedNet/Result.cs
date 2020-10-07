@@ -274,7 +274,7 @@ namespace ExpectedNet
     /// <summary>
     /// Represents an empty type
     /// </summary>
-    public struct Void
+    public struct Unit
     {
         
     }
